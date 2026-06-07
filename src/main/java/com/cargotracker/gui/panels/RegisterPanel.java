@@ -26,23 +26,27 @@ public class RegisterPanel extends JPanel {
     // Form display components for live feedback
     private JLabel costPreviewLabel, insurancePreviewLabel, weightLimitLabel;
     private JButton registerBtn, clearBtn; // Action buttons
-    
+    /**
+     * Constructor to initialize the Registration Panel.
+     * Sets up the main layout, background, and borders, then adds the sub-panels.
+     */
     public RegisterPanel(CargoCompany company, MainDashboardFrame parentFrame) {
         this.company = company;
         this.parentFrame = parentFrame;
-
+        // Setup main panel layout with padding and background color
         setLayout(new BorderLayout(12, 12));
         setBackground(new Color(245, 247, 250));
         setBorder(new EmptyBorder(20, 40, 20, 40));
-
+        // Add the three main sections of the panel: Header, Form body, and Buttons
         add(createFormHeader(), BorderLayout.NORTH);
         add(createForm(), BorderLayout.CENTER);
         add(createButtonBar(), BorderLayout.SOUTH);
     }
-
+    
+     // Creates the header section containing the title and description.
     private JPanel createFormHeader() {
         JPanel p = new JPanel(new BorderLayout());
-        p.setOpaque(false);
+        p.setOpaque(false); // Make background transparent to match main panel
         JLabel title = new JLabel("Register New Shipment");
         title.setFont(new Font("SansSerif", Font.BOLD, 24));
         title.setForeground(new Color(13, 27, 42));
@@ -55,7 +59,8 @@ public class RegisterPanel extends JPanel {
         p.add(desc, BorderLayout.SOUTH);
         return p;
     }
-
+    
+     // Builds the main input form using GridBagLayout for precise alignment.
     private JPanel createForm() {
         JPanel form = new JPanel(new GridBagLayout());
         form.setBackground(Color.WHITE);
