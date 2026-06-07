@@ -136,7 +136,7 @@ the [academic report](documents/EE1004_Group14_CargoShipmentTracker_JavaGUI-LaTe
 | **İsmail Hanifi Nal** (150719025) | `Insurable` interface + `StandardShipment`, `ExpressShipment`, `SaneDayShipment` with rates, caps and insurance percentages |
 | **Abdulkadir Köroğlu** (150719695) | `CargoCompany` core (`registerShipment` weight guard, `HashMap` lookup, totals format) |
 | **Burak Gökmen** (150720010) | Three `Comparator` strategies, `listSortedBy`, revenue & insurance summary breakdown |
-| **Alperen Tufan Pelit** (150720012) | Original console `Main` menu loop, input validation, transcript capture and testing support |
+| **Alperen Tufan Pelit** (150720012) | Original console `Main` menu loop, input validation, transcript capture and testing  support |
 
 ---
 
