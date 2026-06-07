@@ -146,8 +146,11 @@ public class RegisterPanel extends JPanel {
             public void removeUpdate(DocumentEvent e) { updatePreview(); }
             public void changedUpdate(DocumentEvent e) { updatePreview(); }
         };
+        // Attach listeners to trigger calculations when distance or weight changes
         distanceField.getDocument().addDocumentListener(liveListener);
         weightField.getDocument().addDocumentListener(liveListener);
+        
+        // Attach listener to update limits and calculations when shipment type changes
         typeCombo.addActionListener(e -> {
             updateWeightLimit();
             updatePreview();
@@ -157,33 +160,38 @@ public class RegisterPanel extends JPanel {
 
         return form;
     }
-
+    // Updates the text showing the maximum allowed weight based on the selected shipment type
     private void updateWeightLimit() {
         int idx = typeCombo.getSelectedIndex();
+        // 0: Standard, 1: Express, 2: Same-Day
         String limit = (idx == 0) ? "30.0" : (idx == 1) ? "20.0" : "10.0";
         weightLimitLabel.setText("Max: " + limit + " kg");
         weightLimitLabel.setForeground(new Color(16, 185, 129));
     }
-
+    // Calculates and updates the cost and insurance preview dynamically as the user types
     private void updatePreview() {
         try {
+            // Parse current input values
             double dist = Double.parseDouble(distanceField.getText().trim());
             double wt = Double.parseDouble(weightField.getText().trim());
             int idx = typeCombo.getSelectedIndex();
-
+            
+            // Create a temporary shipment object just for calculation purposes
             Shipment temp;
             if (idx == 0) temp = new StandardShipment("preview", "preview", dist, wt);
             else if (idx == 1) temp = new ExpressShipment("preview", "preview", dist, wt);
             else temp = new SameDayShipment("preview", "preview", dist, wt);
-
+            
+            // Update UI labels with formatted values
             costPreviewLabel.setText(String.format("Estimated Cost: %.2f TL", temp.getCost()));
             insurancePreviewLabel.setText(String.format("Insurance: %.2f TL", temp.getInsuranceCost()));
         } catch (NumberFormatException ex) {
+            // If inputs are empty or not valid numbers, reset the preview labels
             costPreviewLabel.setText("Estimated Cost: — TL");
             insurancePreviewLabel.setText("Insurance: — TL");
         }
     }
-
+    // Creates the bottom bar containing the Clear and Register buttons
     private JPanel createButtonBar() {
         JPanel bar = new JPanel(new FlowLayout(FlowLayout.RIGHT, 12, 0));
         bar.setOpaque(false);
