@@ -64,20 +64,22 @@ public class RegisterPanel extends JPanel {
     private JPanel createForm() {
         JPanel form = new JPanel(new GridBagLayout());
         form.setBackground(Color.WHITE);
+        
+        // Create a custom border with an outer line and inner padding
         form.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(220, 225, 235)),
                 new EmptyBorder(24, 32, 24, 32)
         ));
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(8, 8, 8, 8);
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(8, 8, 8, 8); // Add spacing between grid cells
+        gbc.anchor = GridBagConstraints.WEST; // Align components to the left
+        gbc.fill = GridBagConstraints.HORIZONTAL; // Make components stretch horizontally
 
-        // Type
+        // --- Shipment Type Selection ---
         gbc.gridx = 0; gbc.gridy = 0;
         form.add(new JLabel("Shipment Type:"), gbc);
-        gbc.gridx = 1; gbc.gridwidth = 2;
+        gbc.gridx = 1; gbc.gridwidth = 2; // Span across 2 columns
         typeCombo = new JComboBox<>(new String[]{
                 "Standard (1.5 TL/km • max 30 kg • 5% insurance)",
                 "Express  (3.0 TL/km • max 20 kg • 8% insurance)",
@@ -85,7 +87,7 @@ public class RegisterPanel extends JPanel {
         });
         typeCombo.setFont(new Font("SansSerif", Font.PLAIN, 14));
         form.add(typeCombo, gbc);
-        gbc.gridwidth = 1;
+        gbc.gridwidth = 1; // Reset grid width for subsequent components
 
         // Sender
         gbc.gridx = 0; gbc.gridy = 1;
