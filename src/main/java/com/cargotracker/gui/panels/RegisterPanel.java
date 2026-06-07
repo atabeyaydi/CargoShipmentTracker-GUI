@@ -195,12 +195,13 @@ public class RegisterPanel extends JPanel {
     private JPanel createButtonBar() {
         JPanel bar = new JPanel(new FlowLayout(FlowLayout.RIGHT, 12, 0));
         bar.setOpaque(false);
-
+        
+        // Clear button to reset the form
         clearBtn = new JButton("Clear Form");
         clearBtn.addActionListener(e -> clearForm());
-
+        // Main registration button with custom styling
         registerBtn = new JButton("✓ Register Shipment");
-
+        // Main registration button with custom styling
         registerBtn.setBackground(new Color(16, 185, 129));
         // registerBtn.setForeground(Color.WHITE);
         registerBtn.setFont(new Font("SansSerif", Font.BOLD, 15));
@@ -215,47 +216,64 @@ public class RegisterPanel extends JPanel {
         bar.add(registerBtn);
         return bar;
     }
-
+    
+    /**
+     * Handles the actual registration logic when the Register button is clicked.
+     * Validates inputs, creates the shipment, saves it to the model, and refreshes the UI.
+     */
     private void performRegistration() {
         try {
             String sender = senderField.getText().trim();
             String recipient = recipientField.getText().trim();
             double dist = Double.parseDouble(distanceField.getText().trim());
             double wt = Double.parseDouble(weightField.getText().trim());
-
+            
+            // Check for empty name fields
             if (sender.isEmpty() || recipient.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Sender and Recipient names are required.", "Validation Error", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
+            // Determine correct shipment type and create instance with a new ID
             Shipment s;
             int idx = typeCombo.getSelectedIndex();
-            int nextId = company.getShipmentCount() + 1;
+            int nextId = company.getShipmentCount() + 1; // Basic auto-increment ID logic
             if (idx == 0) s = new StandardShipment(nextId, sender, recipient, dist, wt);
             else if (idx == 1) s = new ExpressShipment(nextId, sender, recipient, dist, wt);
             else s = new SameDayShipment(nextId, sender, recipient, dist, wt);
 
+            // Add to central data model
             company.registerShipment(s);
 
+            // Show success feedback to the user
             JOptionPane.showMessageDialog(this,
                     "Shipment registered successfully!\nID: " + s.getId() + " | " + s.typeLabel(),
                     "Success", JOptionPane.INFORMATION_MESSAGE);
-
+            
+            // Post-registration cleanup and UI update
             clearForm();
             parentFrame.requestGlobalRefresh(); // refresh dashboard & table
 
         } catch (NumberFormatException ex) {
+            // Handle non-numeric text in distance/weight fields
             JOptionPane.showMessageDialog(this, "Please enter valid numeric values for distance and weight.", "Input Error", JOptionPane.ERROR_MESSAGE);
         } catch (IllegalArgumentException ex) {
+            // Handle business logic errors (e.g., exceeding weight limit) thrown by Shipment constructors
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Capacity Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+    
+    /**
+     * Externally callable method to trigger an update on the UI components.
+     */
     public void refresh() {
         updateWeightLimit();
         updatePreview();
     }
-
+    
+    /**
+     * Resets all input fields and dropdowns to their default state.
+     */
     private void clearForm() {
         senderField.setText("");
         recipientField.setText("");
@@ -263,7 +281,7 @@ public class RegisterPanel extends JPanel {
         weightField.setText("");
         costPreviewLabel.setText("Estimated Cost: — TL");
         insurancePreviewLabel.setText("Insurance: — TL");
-        typeCombo.setSelectedIndex(0);
-        updateWeightLimit();
+        typeCombo.setSelectedIndex(0); // Reset to Standard shipment
+        updateWeightLimit(); // Re-calculate limits based on default selection
     }
 }
