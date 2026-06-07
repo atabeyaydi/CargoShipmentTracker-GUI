@@ -14,15 +14,19 @@ import java.awt.*;
  * Website-like clean form layout using GridBagLayout.
  */
 public class RegisterPanel extends JPanel {
-
+    
+    // Core business logic model and main application frame references
     private final CargoCompany company;
     private final MainDashboardFrame parentFrame;
-
+    
+    // Form input components
     private JComboBox<String> typeCombo;
     private JTextField senderField, recipientField, distanceField, weightField;
-    private JLabel costPreviewLabel, insurancePreviewLabel, weightLimitLabel;
-    private JButton registerBtn, clearBtn;
 
+    // Form display components for live feedback
+    private JLabel costPreviewLabel, insurancePreviewLabel, weightLimitLabel;
+    private JButton registerBtn, clearBtn; // Action buttons
+    
     public RegisterPanel(CargoCompany company, MainDashboardFrame parentFrame) {
         this.company = company;
         this.parentFrame = parentFrame;
